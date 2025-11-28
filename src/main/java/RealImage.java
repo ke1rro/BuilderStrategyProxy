@@ -15,7 +15,6 @@ public class RealImage implements MyImage {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        // Load image and scale to fit max 300x300
         ImageIcon icon = new ImageIcon(filename);
         Image scaledImage = icon.getImage().getScaledInstance(300, -1, Image.SCALE_SMOOTH);
         if (scaledImage.getHeight(null) > 300) {
@@ -24,11 +23,9 @@ public class RealImage implements MyImage {
         JLabel label = new JLabel(new ImageIcon(scaledImage));
         frame.add(label, BorderLayout.CENTER);
 
-        // Button
         JButton confettiButton = new JButton("Show Confetti 🎉");
         frame.add(confettiButton, BorderLayout.SOUTH);
 
-        // Confetti overlay panel
         confettiPanel = new ConfettiPanel();
         frame.setGlassPane(confettiPanel);
 
@@ -36,21 +33,17 @@ public class RealImage implements MyImage {
 
         frame.pack();
 
-        // Ensure window doesn't exceed 300x300
         Dimension size = frame.getSize();
         int width = Math.min(size.width, 300);
         int height = Math.min(size.height, 300);
         frame.setSize(width, height);
         frame.setResizable(false);
-
-        // ❗️IMPORTANT: do NOT show frame here
     }
 
-    // Confetti animation overlay
     static class ConfettiPanel extends JComponent {
         private final int NUM_CONFETTI = 100;
         private final Color[] COLORS = {
-            Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE
+                Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.MAGENTA, Color.ORANGE
         };
         private final Random rand = new Random();
         private int[] x = new int[NUM_CONFETTI];
@@ -60,7 +53,7 @@ public class RealImage implements MyImage {
 
         public ConfettiPanel() {
             setOpaque(false);
-            setVisible(false); // Hidden until animation begins
+            setVisible(false);
             for (int i = 0; i < NUM_CONFETTI; i++) {
                 x[i] = rand.nextInt(300);
                 y[i] = rand.nextInt(300);
@@ -72,7 +65,8 @@ public class RealImage implements MyImage {
             running = true;
             setVisible(true);
             new Timer(30, e -> {
-                if (!running) ((Timer)e.getSource()).stop();
+                if (!running)
+                    ((Timer) e.getSource()).stop();
                 for (int i = 0; i < NUM_CONFETTI; i++) {
                     y[i] += 5 + rand.nextInt(5);
                     if (y[i] > getHeight()) {
@@ -83,7 +77,6 @@ public class RealImage implements MyImage {
                 repaint();
             }).start();
 
-            // Stop after 3 seconds
             new Timer(3000, e -> {
                 running = false;
                 setVisible(false);
@@ -92,7 +85,8 @@ public class RealImage implements MyImage {
 
         @Override
         protected void paintComponent(Graphics g) {
-            if (!running) return;
+            if (!running)
+                return;
             for (int i = 0; i < NUM_CONFETTI; i++) {
                 g.setColor(color[i]);
                 g.fillOval(x[i], y[i], 8, 8);
@@ -102,6 +96,6 @@ public class RealImage implements MyImage {
 
     @Override
     public void display() {
-        frame.setVisible(true); // 🔥 Show only here
+        frame.setVisible(true);
     }
 }
