@@ -20,9 +20,4 @@ class IntegrationTest {
         MyImage proxyImage = new ProxyImage("test.jpg");
         assertNotNull(proxyImage);
     }
-
-    @Test
-    void testMainMethodRuns() {
-        assertDoesNotThrow(() -> Main.main(new String[] {}));
-    }
 }

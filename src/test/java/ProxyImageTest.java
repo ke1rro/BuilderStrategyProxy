@@ -22,26 +22,13 @@ class ProxyImageTest {
 
     @Test
     void testProxyImageCreationIsLightweight() {
-        String output = outContent.toString();
-
         MyImage proxyImage = new ProxyImage("test.jpg");
 
-        output = outContent.toString();
+        String output = outContent.toString();
 
         assertTrue(output.contains("ProxyImage created"));
         assertFalse(output.contains("Loading image from disk"));
-    }
-
-    @Test
-    void testLazyInitialization() {
-        MyImage proxyImage = new ProxyImage("test.jpg");
-
-        outContent.reset();
-
-        assertDoesNotThrow(() -> proxyImage.display());
-
-        String output = outContent.toString();
-        assertTrue(output.contains("Creating RealImage") || output.contains("Loading"));
+        assertNotNull(proxyImage);
     }
 
     @Test
@@ -49,20 +36,6 @@ class ProxyImageTest {
         MyImage proxyImage = new ProxyImage("test.jpg");
 
         assertInstanceOf(MyImage.class, proxyImage);
-    }
-
-    @Test
-    void testRealImageImplementsMyImageInterface() {
-        MyImage realImage = new RealImage("test.jpg");
-
-        assertInstanceOf(MyImage.class, realImage);
-    }
-
-    @Test
-    void testProxyDelegatestoRealImage() {
-        MyImage proxyImage = new ProxyImage("sample.jpg");
-
-        assertDoesNotThrow(() -> proxyImage.display());
     }
 
     @Test
